@@ -1,4 +1,4 @@
-//  Copyright (c) 2007-2009 Fredrik Mellbin
+//  Copyright (c) 2007-2011 Fredrik Mellbin
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,14 @@
 
 
 
-FFHaaliIndexer::FFHaaliIndexer(const char *Filename, enum FFMS_Sources SourceMode) : FFMS_Indexer(Filename) {
+FFHaaliIndexer::FFHaaliIndexer(const char *Filename, FFMS_Sources SourceMode) : FFMS_Indexer(Filename) {
 	this->SourceMode = SourceMode;
-	SourceFile = Filename;
 	Duration = 0;
 	for (int i = 0; i < 32; i++) {
 		TrackType[i] = FFMS_TYPE_UNKNOWN;
 	}
 
-	pMMC = HaaliOpenFile(SourceFile, SourceMode);
+	pMMC = HaaliOpenFile(Filename, SourceMode);
 
 	CComQIPtr<IPropertyBag> pBag2 = pMMC;
 	CComVariant pV2;
@@ -81,7 +80,7 @@ FFMS_Index *FFHaaliIndexer::DoIndexing() {
 
 		AVCodec *Codec = NULL;
 		std::swap(Codec, CodecContext->codec);
-		if (avcodec_open(CodecContext, Codec) < 0)
+		if (avcodec_open2(CodecContext, Codec, NULL) < 0)
 			throw FFMS_Exception(FFMS_ERROR_CODEC, FFMS_ERROR_DECODING,
 				"Could not open codec");
 
@@ -169,7 +168,7 @@ FFMS_Index *FFHaaliIndexer::DoIndexing() {
 	return TrackIndices.release();
 }
 
-int FFHaaliIndexer::GetNumberOfTracks() { 
+int FFHaaliIndexer::GetNumberOfTracks() {
 	return NumTracks;
 }
 

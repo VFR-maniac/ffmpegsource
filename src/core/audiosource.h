@@ -1,4 +1,4 @@
-//  Copyright (c) 2007-2009 Fredrik Mellbin
+//  Copyright (c) 2007-2011 Fredrik Mellbin
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,8 @@ extern "C" {
 #	include "guids.h"
 #endif
 
-class FFMS_AudioSource {
+struct FFMS_AudioSource {
+private:
 	struct AudioBlock {
 		int64_t Age;
 		int64_t Start;
@@ -152,7 +153,7 @@ class FFHaaliAudio : public FFMS_AudioSource {
 	void Seek();
 
 public:
-	FFHaaliAudio(const char *SourceFile, int Track, FFMS_Index &Index, enum FFMS_Sources SourceMode, int DelayMode);
+	FFHaaliAudio(const char *SourceFile, int Track, FFMS_Index &Index, FFMS_Sources SourceMode, int DelayMode);
 };
 
 #endif // HAALISOURCE

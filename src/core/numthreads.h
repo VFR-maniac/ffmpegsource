@@ -1,4 +1,4 @@
-//  Copyright (c) 2007-2011 Fredrik Mellbin
+//  Copyright (c) 2011 Alexander Smith
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -18,36 +18,4 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-#ifndef FFPP_H
-#define FFPP_H
-
-#ifdef FFMS_USE_POSTPROC
-
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libswscale/swscale.h>
-#include <libpostproc/postprocess.h>
-}
-
-#include "ffmscompat.h"
-
-#include <windows.h>
-#include "avisynth.h"
-
-class FFPP : public GenericVideoFilter {
-private:
-	pp_context *PPContext;
-	pp_mode *PPMode;
-	SwsContext *SWSTo422P;
-	SwsContext *SWSFrom422P;
-	AVPicture InputPicture;
-	AVPicture OutputPicture;
-public:
-	FFPP(PClip AChild, const char *PP, IScriptEnvironment *Env);
-	~FFPP();
-	PVideoFrame __stdcall GetFrame(int n, IScriptEnvironment* Env);
-};
-
-#endif // FFMS_USE_POSTPROC
-
-#endif // FFPP_H
+int GetNumberOfLogicalCPUs();

@@ -1,4 +1,4 @@
-//  Copyright (c) 2007-2009 Fredrik Mellbin
+//  Copyright (c) 2007-2011 Fredrik Mellbin
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -101,7 +101,7 @@ PVideoFrame FFPP::GetFrame(int n, IScriptEnvironment* Env) {
 
 		pp_postprocess(SrcData, SrcStride, DstData, DstStride, vi.width, vi.height, NULL, 0, PPMode, PPContext, 0);
 	} else if (vi.IsYUY2()) {
-		FFMS_SWS_CONST_PARAM uint8_t *SrcData[1] = {(uint8_t *)Src->GetReadPtr()};
+		const uint8_t *SrcData[1] = {(uint8_t *)Src->GetReadPtr()};
 		int SrcStride[1] = {Src->GetPitch()};
 		sws_scale(SWSTo422P, SrcData, SrcStride, 0, vi.height, InputPicture.data, InputPicture.linesize);
 		
@@ -109,7 +109,7 @@ PVideoFrame FFPP::GetFrame(int n, IScriptEnvironment* Env) {
 
 		uint8_t *DstData[1] = {Dst->GetWritePtr()};
 		int DstStride[1] = {Dst->GetPitch()};
-		sws_scale(SWSFrom422P, const_cast<FFMS_SWS_CONST_PARAM uint8_t **>(OutputPicture.data), OutputPicture.linesize, 0, vi.height, DstData, DstStride);
+		sws_scale(SWSFrom422P, OutputPicture.data, OutputPicture.linesize, 0, vi.height, DstData, DstStride);
 	}
 
 	return Dst;
